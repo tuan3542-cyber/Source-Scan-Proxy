@@ -2,12 +2,12 @@ import requests
 import concurrent.futures
 import time, sys
 
-# Đọc proxy từ file
+
 def load_proxies_from_file(filename):
     with open(filename, 'r', encoding='utf-8') as f:
         return [line.strip() for line in f if line.strip()]
 
-# Lấy quốc gia của IP
+
 def get_country(ip):
     try:
         r = requests.get(f"http://ip-api.com/json/{ip}", timeout=2)
@@ -16,7 +16,7 @@ def get_country(ip):
     except:
         return "Unknown"
 
-# Hàm kiểm tra proxy
+
 def check_proxy(proxy_raw):
     proxy_url = f"http://{proxy_raw}"
     try:
@@ -41,7 +41,7 @@ def check_proxy(proxy_raw):
         print(f"[ERR] {proxy_raw} - Timeout/Error")
     return None
 
-# Kiểm tra song song
+
 def filter_fast_proxies(proxy_list):
     fast_proxies = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=300) as executor:
@@ -51,7 +51,7 @@ def filter_fast_proxies(proxy_list):
                 fast_proxies.append(result)
     return fast_proxies
 
-# Ghi ra file
+
 def save_to_file(proxy_list, filename="proxy.txt"):
     with open(filename, 'w') as f:
         for proxy, speed, country in proxy_list:
